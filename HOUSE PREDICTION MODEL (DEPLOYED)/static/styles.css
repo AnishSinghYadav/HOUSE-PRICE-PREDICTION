@@ -1,0 +1,107 @@
+/* General Reset and Styling */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif; /* Use a clean font */
+}
+
+body {
+    background-color: #121212; /* Dark background */
+    color: #e0e0e0; /* Light text color for readability */
+}
+
+/* Header Styling */
+header {
+    text-align: center; /* Center align header content */
+    margin-bottom: 20px; /* Add spacing below the header */
+}
+
+h1 {
+    font-weight: bold; /* Make the heading bold */
+    font-size: 3.5em; /* Increase font size for the heading */
+    color: #ffffff; /* White color for the heading */
+    margin-bottom: 10px; /* Space below the heading */
+}
+
+.animated-text {
+    font-size: 2em; /* Increase font size for the subheading */
+    color: #90caf9; /* Light blue for subheading */
+}
+
+/* Form and Fieldset Styling */
+fieldset {
+    background-color: #1e1e1e; /* Darker background for the fieldset */
+    border: 2px solid #3c3c3c; /* Lighter border color */
+    border-radius: 8px; /* Round the corners */
+    padding: 20px; /* Add padding */
+    font-size: 1.3em; /* Font size of the fieldset */
+    margin: 20px 0; /* Margin above and below the fieldset */
+}
+
+/* Label and Select Element Styling */
+label {
+    display: block; /* Make each label occupy its own line */
+    margin: 10px 0 5px; /* Margin for better spacing */
+    color: #e0e0e0; /* Light color for labels */
+}
+
+select {
+    width: 100%; /* Full width for dropdowns */
+    padding: 10px; /* Padding for dropdowns */
+    font-size: 1.1em; /* Font size for dropdowns */
+    border-radius: 5px; /* Round corners */
+    border: 1px solid #3c3c3c; /* Border styling */
+    background-color: #2a2a2a; /* Dark background for dropdowns */
+    color: #ffffff; /* White text for dropdowns */
+}
+
+/* Button Styling */
+button {
+    padding: 10px 20px; /* Padding for the button */
+    font-size: 1.3em; /* Font size for the button */
+    border-radius: 5px; /* Round corners */
+    margin-top: 20px; /* Margin above the button */
+    background-color: #28a745; /* Green button color */
+    color: white; /* Button text color */
+    border: none; /* Remove border */
+    cursor: pointer; /* Change cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+button:hover {
+    background-color: #218838; /* Darker shade on hover */
+}
+
+/* Prediction Output Styling */
+#prediction {
+    font-size: 2em; /* Font size for prediction */
+    margin-top: 20px; /* Add margin above the prediction */
+    opacity: 0; /* Start invisible */
+    animation: fadeIn 1s forwards; /* Fade in animation */
+    animation-delay: 1.5s; /* Delay for prediction */
+    transition: transform 1s ease, opacity 1s ease; /* Transition for scaling and fading */
+}
+
+/* Keyframes for fade-in effect */
+@keyframes fadeIn {
+    to {
+        opacity: 1; /* End at full visibility */
+    }
+}
+
+/* Keyframes for slide-in effect */
+@keyframes slideInLeft {
+    to {
+        opacity: 1; /* End at full visibility */
+        transform: translateX(0); /* Move to original position */
+    }
+}
+
+/* Keyframes for scale-up effect */
+@keyframes scaleUp {
+    to {
+        opacity: 1; /* End at full visibility */
+        transform: scale(1); /* Scale to original size */
+    }
+}

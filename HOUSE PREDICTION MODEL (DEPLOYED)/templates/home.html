@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Prediction</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* General Reset and Styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif; /* Use a clean font */
+        }
+
+        body {
+            background-color: #121212; /* Dark background */
+            color: #e0e0e0; /* Light text color for readability */
+        }
+
+        /* Header Styling */
+        header {
+            text-align: center; /* Center align header content */
+            margin-bottom: 20px; /* Add spacing below the header */
+        }
+
+        h1 {
+            font-weight: bold; /* Make the heading bold */
+            font-size: 3.5em; /* Increase font size for the heading */
+            color: #ffffff; /* White color for the heading */
+            margin-bottom: 10px; /* Space below the heading */
+            opacity: 0; /* Start invisible */
+            transform: translateX(-50px); /* Start slightly off to the left */
+            animation: slideInLeft 1s forwards; /* Trigger the slide-in animation */
+            animation-delay: 0.2s; /* Delay for the heading */
+        }
+
+        .animated-text {
+            font-size: 2em; /* Increase font size for the subheading */
+            color: #90caf9; /* Light blue for subheading */
+            opacity: 0; /* Start invisible */
+            transform: scale(0.8); /* Start slightly smaller */
+            animation: scaleUp 1s forwards; /* Trigger the scaling animation */
+            animation-delay: 0.5s; /* Delay for the subheading */
+        }
+
+        /* Form and Fieldset Styling */
+        fieldset {
+            background-color: #1e1e1e; /* Darker background for the fieldset */
+            border: 2px solid #3c3c3c; /* Lighter border color */
+            border-radius: 8px; /* Round the corners */
+            padding: 20px; /* Add padding */
+            font-size: 1.3em; /* Font size of the fieldset */
+            margin: 20px 0; /* Margin above and below the fieldset */
+            opacity: 0; /* Start invisible */
+            animation: fadeIn 1s forwards; /* Trigger the fade-in animation */
+            animation-delay: 0.8s; /* Delay for the fieldset */
+        }
+
+        /* Label and Select Element Styling */
+        label {
+            display: block; /* Make each label occupy its own line */
+            margin: 10px 0 5px; /* Margin for better spacing */
+            color: #e0e0e0; /* Light color for labels */
+            opacity: 0; /* Start invisible */
+            animation: fadeIn 1s forwards; /* Trigger the fade-in animation */
+            animation-delay: 1s; /* Delay for the labels */
+        }
+
+        select {
+            width: 100%; /* Full width for dropdowns */
+            padding: 10px; /* Padding for dropdowns */
+            font-size: 1.1em; /* Font size for dropdowns */
+            border-radius: 5px; /* Round corners */
+            border: 1px solid #3c3c3c; /* Border styling */
+            background-color: #2a2a2a; /* Dark background for dropdowns */
+            color: #ffffff; /* White text for dropdowns */
+            opacity: 0; /* Start invisible */
+            animation: fadeIn 1s forwards; /* Trigger the fade-in animation */
+            animation-delay: 1.2s; /* Delay for the selects */
+        }
+
+        /* Button Styling */
+        button {
+            padding: 10px 20px; /* Padding for the button */
+            font-size: 1.3em; /* Font size for the button */
+            border-radius: 5px; /* Round corners */
+            margin-top: 20px; /* Margin above the button */
+            background-color: #28a745; /* Green button color */
+            color: white; /* Button text color */
+            border: none; /* Remove border */
+            cursor: pointer; /* Change cursor on hover */
+            transition: background-color 0.3s; /* Smooth transition for background color */
+        }
+
+        button:hover {
+            background-color: #218838; /* Darker shade on hover */
+        }
+
+        /* Prediction Output Styling */
+        #prediction {
+            font-size: 2em; /* Font size for prediction */
+            margin-top: 20px; /* Add margin above the prediction */
+            opacity: 0; /* Start invisible */
+            animation: fadeIn 1s forwards; /* Fade in animation */
+            animation-delay: 1.5s; /* Delay for prediction */
+            transition: transform 1s ease, opacity 1s ease; /* Transition for scaling and fading */
+        }
+
+        /* Keyframes for fade-in effect */
+        @keyframes fadeIn {
+            to {
+                opacity: 1; /* End at full visibility */
+            }
+        }
+        @keyframes slideInLeft {
+            to {
+                opacity: 1; /* End at full visibility */
+                transform: translateX(0); /* Move to original position */
+            }
+        }
+        @keyframes scaleUp {
+            to {
+                opacity: 1; /* End at full visibility */
+                transform: scale(1); /* Scale to original size */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>House Price Prediction</h1>
+        <p class="animated-text">Find out if your dream home falls in the high or low price category.</p>
+    </header>
+    <main>
+        <form action="/predict" method="POST">
+            <fieldset>
+                <legend>Property Details</legend>
+                <label for="location">Location:</label>
+                <select name="location" id="location">
+                    {% for location in locations %}
+                        <option value="{{ location }}">{{ location }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="size">Size:</label>
+                <select name="size" id="size">
+                    {% for size in sizes %}
+                        <option value="{{ size }}">{{ size }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="total_sqft">Total Sq. Ft.:</label>
+                <select name="total_sqft" id="total_sqft">
+                    {% for total_sqft in total_sqfts %}
+                        <option value="{{ total_sqft }}">{{ total_sqft }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="bath">Bath:</label>
+                <select name="bath" id="bath">
+                    {% for bath in baths %}
+                        <option value="{{ bath }}">{{ bath }}</option>
+                    {% endfor %}
+                </select>
+                
+                <button type="submit">Predict Price Category</button>
+            </fieldset>
+        </form>
+        <div id="prediction"></div>
+    </main>
+    <script>
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            fetch('/predict', {
+                method: 'POST',
+                body: new FormData(form)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const predictionElement = document.getElementById('prediction');
+                predictionElement.textContent = `Predicted Price Category: ${data.prediction}`;
+
+                // Change color based on prediction category
+                if (data.prediction.toLowerCase() === 'low') {
+                    predictionElement.style.color = 'green'; // Green for low
+                } else if (data.prediction.toLowerCase() === 'medium') {
+                    predictionElement.style.color = 'yellow'; // Yellow for medium
+                } else if (data.prediction.toLowerCase() === 'high') {
+                    predictionElement.style.color = 'red'; // Red for high
+                }
+
+                // Add slow animation for the output
+                predictionElement.style.transform = 'scale(1.1)'; // Scale up
+                setTimeout(() => {
+                    predictionElement.style.transform = 'scale(1)'; // Scale back
+                }, 1000); // Delay before scaling back
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('prediction').textContent = 'Error: ' + error;
+            });
+        });
+    </script>
+</body>
+</html>
